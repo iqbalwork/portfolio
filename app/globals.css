@@ -1,26 +1,155 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #07060b;
+  --foreground: #f4f4f7;
+  
+  --kmp-purple: #7F52FF;
+  --kmp-pink: #C811E2;
+  --kmp-orange: #E54857;
+  
+  --card-bg: rgba(15, 14, 25, 0.45);
+  --card-border: rgba(255, 255, 255, 0.05);
+  --card-glow: rgba(127, 82, 255, 0.15);
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-geist-sans), "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+  
+  --color-kmp-purple: var(--kmp-purple);
+  --color-kmp-pink: var(--kmp-pink);
+  --color-kmp-orange: var(--kmp-orange);
+  
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-card-glow: var(--card-glow);
+  
+  --animate-pulse-slow: pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delayed: float-delayed 8s ease-in-out infinite;
+  --animate-spin-slow: spin 20s linear infinite;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.2;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scale(1.15);
+    }
+  }
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) scale(1);
+    }
+    50% {
+      transform: translateY(-12px) scale(1.02);
+    }
+  }
+  @keyframes float-delayed {
+    0%, 100% {
+      transform: translateY(0px) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translateY(12px) scale(0.98) rotate(5deg);
+    }
   }
 }
 
+/* Global Reset and Aesthetics */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Selection Highlight */
+::selection {
+  background-color: rgba(127, 82, 255, 0.3);
+  color: #ffffff;
+}
+
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #181624;
+  border-radius: 9999px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--kmp-purple);
+}
+
+/* Utility Custom Gradients & Mesh Glows */
+.text-gradient {
+  background: linear-gradient(135deg, var(--kmp-purple) 0%, var(--kmp-pink) 50%, var(--kmp-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-purple-pink {
+  background: linear-gradient(135deg, #a78bfa 0%, var(--kmp-pink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-kmp-gradient {
+  background: linear-gradient(135deg, var(--kmp-purple) 0%, var(--kmp-pink) 50%, var(--kmp-orange) 100%);
+}
+
+.border-gradient {
+  position: relative;
+}
+
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, var(--kmp-purple) 0%, var(--kmp-pink) 50%, var(--kmp-orange) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.border-gradient:hover::before {
+  opacity: 1;
+}
+
+/* Glassmorphism Cards */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(127, 82, 255, 0.25);
+  box-shadow: 0 12px 40px 0 rgba(127, 82, 255, 0.08);
 }
